@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
+
+import store from './redux/store';
+import Questions from './containers/questions/Questions';
+import QuestionDetail from './containers/question_detail/QuestionDetail';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <SimpleBar style={{ height: '100vh' }}>
+          <Switch>
+            <Route path="/questions/:id" component={QuestionDetail} />
+            <Route path="/" component={Questions} />
+            <Redirect to="/" />
+          </Switch>
+        </SimpleBar>
+      </Router>
+    </Provider>
   );
 }
 
