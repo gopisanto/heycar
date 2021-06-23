@@ -1,0 +1,9 @@
+const ns = 'action.question';
+
+export const GET_QUESTIONS = `${ns}.GET_QUESTIONS`;
+export const GET_QUESTIONS_SUCCESS = `${ns}.GET_QUESTIONS_SUCCESS`;
+export const GET_QUESTIONS_FAIL = `${ns}.GET_QUESTIONS_FAIL`;
+
+export const GET_QUESTION_DETAIL = `${ns}.GET_QUESTION_DETAIL`;
+export const GET_QUESTION_DETAIL_SUCCESS = `${ns}.GET_QUESTION_DETAIL_SUCCESS`;
+export const GET_QUESTION_DETAIL_FAIL = `${ns}.GET_QUESTION_DETAIL_FAIL`;
