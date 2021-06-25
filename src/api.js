@@ -13,3 +13,20 @@ export const getQuestionDetail = async id => {
 
   return response.data;
 };
+
+export const saveVoting = async (id, voteIds) => {
+  const urlsToSaveVotes = voteIds.map(
+    vote => `${ALL_QUESTIONS_URL}/${id}/choices/${vote}`
+  );
+  const response = await Promise.allSettled(
+    urlsToSaveVotes.map(url => axios.post(url))
+  );
+
+  return response.map(resp => resp.value.data);
+};
+
+export const createQuestion = async question => {
+  const response = await axios.post(ALL_QUESTIONS_URL, question);
+
+  return response.data;
+};

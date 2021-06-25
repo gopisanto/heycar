@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import StyledQuestion from './Question.style';
+import { QuestionContainer } from './Question.style';
 import LabelValue from '../../components/LabelValue';
 import { formatDate } from '../../utils';
 
@@ -18,11 +18,13 @@ const Question = ({ question: questionObj = {} }) => {
   };
 
   return (
-    <StyledQuestion onClick={handleClick}>
-      <h3>{question}</h3>
-      <LabelValue value={formatDate(publishedAt)} />
-      <LabelValue label="No. of Choices" value={choices.length} />
-    </StyledQuestion>
+    <QuestionContainer onClick={handleClick}>
+      <div>
+        <h4>{question}</h4>
+        <LabelValue value={formatDate(publishedAt)} />
+        <LabelValue label="No. of Choices" value={choices.length} />
+      </div>
+    </QuestionContainer>
   );
 };
 
