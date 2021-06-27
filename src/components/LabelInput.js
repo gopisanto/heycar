@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledLabelInput = styled.div`
@@ -20,7 +21,7 @@ const StyledLabelInput = styled.div`
   }
 `;
 
-export default ({ onChange, label, value }) => {
+const LabelInput = ({ onChange, label, value }) => {
   return (
     <StyledLabelInput>
       <label>{label}</label>
@@ -28,3 +29,11 @@ export default ({ onChange, label, value }) => {
     </StyledLabelInput>
   );
 };
+
+LabelInput.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
+
+export default LabelInput;

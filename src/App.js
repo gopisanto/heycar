@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
+import { isEmpty } from 'lodash';
 
 import Questions from './containers/questions/Questions';
 import QuestionDetail from './containers/question_detail/QuestionDetail';
@@ -14,10 +15,12 @@ import * as actions from './redux/actions/actions';
 import * as selectors from './redux/selectors';
 import GlobalStyles from './App.style';
 
-function App({ getQuestions, showSnackbar, snackMessage, toggleSnackbar }) {
+function App({ getQuestions, snackMessage, setSnackMessage }) {
   useEffect(() => {
     getQuestions();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const snackbarCloseHandler = () => setSnackMessage(null);
 
   return (
     <>
@@ -26,14 +29,21 @@ function App({ getQuestions, showSnackbar, snackMessage, toggleSnackbar }) {
         <Switch>
           <Route path="/questions/create" component={CreateQuestion} />
           <Route path="/questions/:id" component={QuestionDetail} />
-          <Route path="/questions" exact component={Questions} />
+          <Route
+            path="/questions"
+            exact
+            render={props => (
+              <Questions {...props} callbackWhenError={getQuestions} />
+            )}
+          />
+          <Route path="/null" exact component={null} />
           <Redirect to="/questions" />
         </Switch>
       </SimpleBar>
       <Snackbar
-        open={showSnackbar}
+        open={!isEmpty(snackMessage)}
         autoHideDuration={5000}
-        onClose={toggleSnackbar}
+        onClose={snackbarCloseHandler}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         message={snackMessage}
         action={
@@ -41,7 +51,7 @@ function App({ getQuestions, showSnackbar, snackMessage, toggleSnackbar }) {
             size="small"
             aria-label="close"
             color="inherit"
-            onClick={toggleSnackbar}
+            onClick={snackbarCloseHandler}
           >
             <CloseIcon fontSize="small" />
           </IconButton>
@@ -52,13 +62,12 @@ function App({ getQuestions, showSnackbar, snackMessage, toggleSnackbar }) {
 }
 
 const mapStateToProps = state => ({
-  showSnackbar: selectors.getShowSnackbar(state),
   snackMessage: selectors.getSnackMessage(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   getQuestions: () => dispatch(actions.getQuestions()),
-  toggleSnackbar: () => dispatch(actions.toggleSnackbar()),
+  setSnackMessage: val => dispatch(actions.setSnackMessage(val)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

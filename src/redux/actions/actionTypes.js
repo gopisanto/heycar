@@ -19,5 +19,5 @@ export const CREATE_QUESTION_FAIL = `${ns}.CREATE_QUESTION_FAIL`;
 export const CLEAR_QUESTION_DETAIL = `${ns}.CLEAR_QUESTION_DETAIL`;
 
 //UI related action types
-export const TOGGLE_SNACKBAR = `${ns}.TOGGLE_SNACKBAR`;
 export const SET_SNACK_MESSAGE = `${ns}.SET_SNACK_MESSAGE`;
+export const RESET_ERROR_FLAG = `${ns}.RESET_ERROR_FLAG`;

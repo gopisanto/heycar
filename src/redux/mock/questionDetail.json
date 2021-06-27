@@ -1,0 +1,17 @@
+{
+  "data": {
+    "question": "Favourite programming language?",
+    "choices": [
+      {
+        "choice": "Objective-C",
+        "votes": 1,
+        "url": "/questions/11/choices/76"
+      },
+      { "choice": "Python", "votes": 0, "url": "/questions/11/choices/77" },
+      { "choice": "Ruby", "votes": 0, "url": "/questions/11/choices/78" },
+      { "choice": "Swift", "votes": 0, "url": "/questions/11/choices/79" }
+    ],
+    "published_at": "2021-06-24T15:27:11.511Z",
+    "url": "/questions/11"
+  }
+}

@@ -1,5 +1,7 @@
 import { keyBy } from 'lodash';
 
+import history from '../redux/history';
+
 export const formatDate = dateString => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString(undefined, options);
@@ -39,5 +41,40 @@ export const updateChoices = (question, choices) => {
   const existingChoices = keyBy(question.choices || [], choice => choice.url);
   const newChoices = keyBy(choices, choice => choice.url);
 
-  return { ...question, choices: Object.values({ ...existingChoices, ...newChoices }) };
+  return {
+    ...question,
+    choices: Object.values({ ...existingChoices, ...newChoices }),
+  };
+};
+
+export const refreshPage = () => {
+  history.push('/null');
+
+  setTimeout(() => {
+    history.goBack();
+  }, 100);
+};
+
+export const calcTotalVotes = detail => {
+  if (!detail) {
+    return 0;
+  }
+
+  const choices = detail.choices || [];
+
+  return choices.reduce((result, choice) => result + choice.votes, 0);
+};
+
+export const calcPerc = (choice, voteIds, total) => {
+  let result = 0;
+
+  if (voteIds.includes(extractIdsFromSlug(choice.url))) {
+    ++result;
+  }
+
+  result += choice.votes;
+
+  return result === 0
+    ? 0
+    : parseFloat((result * 100) / (total + voteIds.length)).toFixed(1);
 };

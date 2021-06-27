@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { isEmpty, omit, some } from 'lodash';
@@ -10,25 +11,27 @@ import { CreateQuestionContainer, Close } from './CreateQuestion.style';
 import LabelInput from '../../components/LabelInput';
 import Box from '../../components/Box';
 import Button from '../../components/Button';
+import ErrorMessage from '../../components/ErrorMessage';
 import * as actions from '../../redux/actions/actions';
+import * as selectors from '../../redux/selectors';
 
 const createEmptyChoice = () => ({
   [uuidv4()]: { choice: '' },
 });
 
-const CreateQuestion = ({ createQuestion }) => {
+const CreateQuestion = ({ createQuestion, createQuestionFail }) => {
   const [question, setQuestion] = useState('');
   const [choices, setChoices] = useState(createEmptyChoice());
   const lastRef = useRef(null);
+  const noOfChoices = Object.keys(choices).length;
 
   useEffect(() => {
     if (lastRef.current) {
       lastRef.current.focus();
     }
-  }, [Object.keys(choices).length]);
+  }, [noOfChoices]);
 
   const handleAddChoice = () => {
-    console.log({ ...choices, ...createEmptyChoice() });
     setChoices({ ...choices, ...createEmptyChoice() });
   };
 
@@ -55,6 +58,10 @@ const CreateQuestion = ({ createQuestion }) => {
         <CloseIcon />
       </Close>
       <h2>Create your Question</h2>
+      {createQuestionFail ||
+        (true && (
+          <ErrorMessage>Create Question Failed, please try again!</ErrorMessage>
+        ))}
       <LabelInput
         label="Your Question"
         value={question}
@@ -62,7 +69,7 @@ const CreateQuestion = ({ createQuestion }) => {
       />
       <label>Choices</label>
       {Object.keys(choices).map((id, i) => (
-        <Box>
+        <Box key={id}>
           <input
             value={choices[id].choice}
             onChange={({ target: { value } }) => handleChoiceChange(value, id)}
@@ -83,8 +90,20 @@ const CreateQuestion = ({ createQuestion }) => {
   );
 };
 
+CreateQuestion.propTypes = {
+  createQuestion: PropTypes.func.isRequired,
+  createQuestionFail: PropTypes.bool,
+};
+
+CreateQuestion.defaultProps = {
+  createQuestionFail: false,
+};
+
+const mapStateToProps = state => ({
+  createQuestionFail: selectors.getCreateQuestionFail(state),
+});
 const mapDispatchToProps = dispatch => ({
   createQuestion: question => dispatch(actions.createQuestion(question)),
 });
 
-export default connect(undefined, mapDispatchToProps)(CreateQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateQuestion);

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledLabelValue = styled.div`
@@ -12,7 +13,7 @@ const StyledLabelValue = styled.div`
   }
 `;
 
-export default ({ label, value }) => {
+const LabelValue = ({ label, value }) => {
   return (
     <StyledLabelValue>
       {label && <label className="label">{label}</label>}
@@ -20,3 +21,14 @@ export default ({ label, value }) => {
     </StyledLabelValue>
   );
 };
+
+LabelValue.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string.isRequired,
+};
+
+LabelValue.defaultProps = {
+  label: undefined,
+};
+
+export default LabelValue;
