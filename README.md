@@ -19,7 +19,7 @@
 
 ## Progressive webapp (Offline support)
 
-- This project is a PWA, and supports cache first then network policy. This means when the website is visited for the first time all the assets will be cached and on next visit it will serve from the cache instead of making a network request.
+- This project is a PWA, and supports network first and cache policy. This means when the website is visited for the first time all the assets will be cached and everytime it serves from the network, if there is no internet then it will serve from the cache whatever it is cached. In none of the cases it will display error page to refresh.
 - When new code base is available, we need to change the cache name in service worker file _sw.js_ so the new changes will come in to effect.
 - When i was testing this it was little slow in caching or sometimes after refreshing it is caching, probably i might miss something here since i am implementing this for very first time or this is how it works i am not sure.
 - The pages and api calls which are visited when online, will only be cached. Otherwise it will crash the application, here is the point to handle this, but i was not able to do. May be if i have more time i can do this. Anyways i have tried different ways to achieve but no luck. The ways which i have tried are as follows
