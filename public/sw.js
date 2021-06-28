@@ -1,38 +1,39 @@
-const CACHE_NAME = 'sw_cache_v1';
+const CACHE_NAME = 'sw_cache_v2';
 
-const urlsToCache = ['offline.html'];
+// const urlsToCache = ['/', 'index.html', '/questions', 'favicon.ico', '/static/js/*.*', '/static/css/*.*', 'offline.html'];
 
 const self = this;
 
 //install SW
 self.addEventListener('install', (event) => {
-event.waitUntil(
+/*event.waitUntil(
     caches.open(CACHE_NAME)
     .then(cache => {
+        console.log('Opened cache');
+
         return cache.addAll(urlsToCache);
     })
-);
-self.skipWaiting();
+);*/
+//self.skipWaiting();
 })
 
 //Listen for requests
 self.addEventListener('fetch', (event) => {
 event.respondWith(
-    caches.match(event.request).then((resp) => {
-        return resp || fetch(event.request).then((response) => {
-          let responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          })
-  
-          return response;
-        }).catch(function() {
-            const channel4Broadcast = new BroadcastChannel('channel4');
-            channel4Broadcast.postMessage({offline: true});
-            return caches.match('/offline.html');
+    fetch(event.request)
+    .then(resp => {
+        const respClone = resp.clone();
+
+        caches.open(CACHE_NAME)
+        .then(cache => {
+            console.log('Cached request and response'+JSON.stringify(event.request.url));
+            cache.put(event.request, respClone);
         })
-      })
-)});
+
+        return resp;
+    }).catch(() => caches.match(event.request).then(res => res))
+);
+})
 
 // Activate SW
 self.addEventListener('activate', (event) => {
