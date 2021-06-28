@@ -15,6 +15,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-loader-spinner": "^4.0.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -41,10 +42,11 @@
   },
   "scripts": {
     "start": "serve -s build",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "serve -s build"
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -65,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^7.6.0",
     "prettier": "2.3.1"
   }
 }

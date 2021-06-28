@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -8,14 +8,21 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import { isEmpty } from 'lodash';
 
-import Questions from './containers/questions/Questions';
-import QuestionDetail from './containers/question_detail/QuestionDetail';
-import CreateQuestion from './containers/create_question/CreateQuestion';
+import Loader from './components/Loader';
 import * as actions from './redux/actions/actions';
 import * as selectors from './redux/selectors';
 import GlobalStyles from './App.style';
 
-function App({ getQuestions, snackMessage, setSnackMessage }) {
+const Questions = lazy(() => import('./containers/questions/Questions'));
+
+const QuestionDetail = lazy(() =>
+  import('./containers/question_detail/QuestionDetail')
+);
+const CreateQuestion = lazy(() =>
+  import('./containers/create_question/CreateQuestion')
+);
+
+function App({ getQuestions, snackMessage, setSnackMessage, showLoader }) {
   useEffect(() => {
     getQuestions();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -24,21 +31,26 @@ function App({ getQuestions, snackMessage, setSnackMessage }) {
 
   return (
     <>
+      <Loader show={showLoader} />
       <GlobalStyles />
       <SimpleBar style={{ height: '100vh' }}>
-        <Switch>
-          <Route path="/questions/create" component={CreateQuestion} />
-          <Route path="/questions/:id" component={QuestionDetail} />
-          <Route
-            path="/questions"
-            exact
-            render={props => (
-              <Questions {...props} callbackWhenError={getQuestions} />
-            )}
-          />
-          <Route path="/null" exact component={null} />
-          <Redirect to="/questions" />
-        </Switch>
+        <Suspense
+          fallback={<Loader show msg="Please wait while screen loads!" />}
+        >
+          <Switch>
+            <Route path="/questions/create" component={CreateQuestion} />
+            <Route path="/questions/:id" component={QuestionDetail} />
+            <Route
+              path="/questions"
+              exact
+              render={props => (
+                <Questions {...props} callbackWhenError={getQuestions} />
+              )}
+            />
+            <Route path="/null" exact component={null} />
+            <Redirect to="/questions" />
+          </Switch>
+        </Suspense>
       </SimpleBar>
       <Snackbar
         open={!isEmpty(snackMessage)}
@@ -63,6 +75,7 @@ function App({ getQuestions, snackMessage, setSnackMessage }) {
 
 const mapStateToProps = state => ({
   snackMessage: selectors.getSnackMessage(state),
+  showLoader: selectors.getShowLoader(state),
 });
 
 const mapDispatchToProps = dispatch => ({

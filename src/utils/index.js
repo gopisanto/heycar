@@ -30,7 +30,7 @@ export const mapifyArray = (arr, withProp) => {
     return {};
   }
 
-  return keyBy(arr, withProp);
+  return arr.reduce((acc, curr) => ({ [curr.url]: curr, ...acc }), {});
 };
 
 export const updateChoices = (question, choices) => {
@@ -68,7 +68,7 @@ export const calcTotalVotes = detail => {
 export const calcPerc = (choice, voteIds, total) => {
   let result = 0;
 
-  if (voteIds.includes(extractIdsFromSlug(choice.url))) {
+  if (voteIds.includes(choice.url)) {
     ++result;
   }
 
@@ -77,4 +77,13 @@ export const calcPerc = (choice, voteIds, total) => {
   return result === 0
     ? 0
     : parseFloat((result * 100) / (total + voteIds.length)).toFixed(1);
+};
+
+export const insertQuestion = (newQuestion, questions) => {
+  const questionValues = Object.values(questions);
+  debugger;
+  return mapifyArray(
+    new Array(newQuestion).concat(questionValues),
+    question => question.url
+  );
 };

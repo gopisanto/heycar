@@ -30,7 +30,7 @@ describe('Utils', () => {
     const func = slug => extractIdsFromSlug(slug.url);
 
     expect(mapifyArray(questions, func)).toEqual({
-      [extractIdsFromSlug(questionDetail.data.url)]: { ...questionDetail.data },
+      [questionDetail.data.url]: { ...questionDetail.data },
     });
   });
 

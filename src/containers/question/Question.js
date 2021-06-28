@@ -22,7 +22,7 @@ const Question = ({ question: questionObj }) => {
     <QuestionContainer onClick={handleClick}>
       <div>
         <h4>{question}</h4>
-        <LabelValue value={formatDate(publishedAt)} />
+        <LabelValue value={`Published on: ${formatDate(publishedAt)}`} />
         <LabelValue label="No. of Choices" value={choices.length.toString()} />
       </div>
     </QuestionContainer>

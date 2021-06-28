@@ -3,7 +3,7 @@ import { fromJS } from 'immutable';
 import * as actions from '../actions/actions';
 import * as actionTypes from '../actions/actionTypes';
 import { INITIAL_STATE, questions as reducer } from '../reducers';
-import { mapifyArray, extractIdsFromSlug, updateChoices } from '../../utils';
+import { mapifyArray, updateChoices, insertQuestion } from '../../utils';
 import questions from '../mock/questions.json';
 import questionDetail from '../mock/questionDetail.json';
 
@@ -15,8 +15,8 @@ describe('Reducers', () => {
     );
     const expected = INITIAL_STATE.set(
       'questions',
-      fromJS(mapifyArray(questions.data, slug => extractIdsFromSlug(slug.url)))
-    );
+      fromJS(mapifyArray(questions.data, slug => slug.url))
+    ).set('initialized', true);
 
     expect(nextState).toEqual(expected);
   });
@@ -48,12 +48,12 @@ describe('Reducers', () => {
       INITIAL_STATE,
       actions.getQuestionsSuccess(questions.data)
     );
-    expected = expected.updateIn(['questions', '11'], question =>
+    expected = expected.updateIn(['questions', '/questions/11'], question =>
       fromJS(updateChoices(question.toJS(), Array(newChoice)))
     );
     nextState = reducer(
       nextState,
-      actions.saveVotingSuccess('11', Array(newChoice))
+      actions.saveVotingSuccess('/questions/11', Array(newChoice))
     );
     expect(nextState).toEqual(expected);
   });
@@ -90,7 +90,10 @@ describe('Reducers', () => {
       INITIAL_STATE,
       actions.createQuestionSuccess(newQuestion)
     );
-    const expected = INITIAL_STATE.set('questions', fromJS(Array(newQuestion)));
+    const expected = INITIAL_STATE.set(
+      'questions',
+      fromJS(insertQuestion(newQuestion, INITIAL_STATE.get('questions').toJS()))
+    );
 
     expect(nextState).toEqual(expected);
   });

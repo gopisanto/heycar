@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Tooltip from '@material-ui/core/Tooltip';
+import styled from 'styled-components';
 
 import {
   Container,
@@ -14,7 +15,23 @@ import Question from '../question/Question';
 import RefreshOnError from '../../components/RefreshOnError';
 import * as selectors from '../../redux/selectors';
 
-const Questions = ({ questions, getQuestionsFail, callbackWhenError }) => {
+const NoQuestionsContainer = styled.div`
+  text-align: center;
+  margin-top: 25px;
+  width: 100%;
+`;
+const NoQuestions = () => (
+  <NoQuestionsContainer>
+    No Questions available to display!
+  </NoQuestionsContainer>
+);
+
+const Questions = ({
+  questions,
+  getQuestionsFail,
+  callbackWhenError,
+  initialized,
+}) => {
   const history = useHistory();
 
   if (getQuestionsFail) {
@@ -31,11 +48,13 @@ const Questions = ({ questions, getQuestionsFail, callbackWhenError }) => {
             <AddCircleIcon
               onClick={() => history.push('/questions/create')}
               className="createIcon"
+              data-cy="create_icon"
             />
           </CreateContainer>
         </Tooltip>
       </div>
-      <QuestionsContainer>
+      <QuestionsContainer data-cy="questions-container">
+        {initialized && questions.length === 0 && <NoQuestions />}
         {questions &&
           questions.map(question => (
             <Question key={question.url} question={question} />
@@ -49,17 +68,20 @@ Questions.propTypes = {
   questions: PropTypes.array,
   getQuestionsFail: PropTypes.bool,
   callbackWhenError: PropTypes.func,
+  initialized: PropTypes.bool,
 };
 
 Questions.defaultProps = {
   questions: [],
   getQuestionsFail: false,
   callbackWhenError: f => f,
+  initialized: false,
 };
 
 const mapStateToProps = state => ({
   questions: selectors.getQuestions(state),
   getQuestionsFail: selectors.getGetQuestionsFail(state),
+  initialized: selectors.getInitialized(state),
 });
 
 export default connect(mapStateToProps, undefined)(Questions);

@@ -50,7 +50,7 @@ export const saveVoting =
         return;
       }
       const response = await api.saveVoting(id, voteIds);
-      dispatch(saveVotingSuccess(id, response));
+      dispatch(saveVotingSuccess(`/questions/${id}`, response));
       dispatch(setSnackMessage('Your voting saved successfully!'));
       history.push('/questions');
     } catch (error) {
@@ -106,4 +106,9 @@ export const setSnackMessage = payload => ({
 export const resetErrorFlag = field => ({
   type: actionTypes.RESET_ERROR_FLAG,
   payload: field,
+});
+
+export const showLoader = flag => ({
+  type: actionTypes.SHOW_LOADER,
+  payload: flag,
 });

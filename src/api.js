@@ -1,5 +1,38 @@
 import axios from 'axios';
 
+export const injectLoaderActionToAxiosInterceptor = ({ showLoader }) => {
+  console.log('interceptor registered ');
+  axios.interceptors.request.use(
+    config => {
+      if (showLoader) {
+        showLoader(true);
+      }
+      return config;
+    },
+    error => {
+      if (showLoader) {
+        showLoader(false);
+      }
+      Promise.reject(error);
+    }
+  );
+
+  axios.interceptors.response.use(
+    async response => {
+      if (showLoader) {
+        showLoader(false);
+      }
+      return response;
+    },
+    error => {
+      if (showLoader) {
+        showLoader(false);
+      }
+      Promise.reject(error);
+    }
+  );
+};
+
 const ALL_QUESTIONS_URL = 'https://polls.apiblueprint.org/questions';
 
 export const getQuestions = async () => {

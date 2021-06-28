@@ -21,3 +21,4 @@ export const CLEAR_QUESTION_DETAIL = `${ns}.CLEAR_QUESTION_DETAIL`;
 //UI related action types
 export const SET_SNACK_MESSAGE = `${ns}.SET_SNACK_MESSAGE`;
 export const RESET_ERROR_FLAG = `${ns}.RESET_ERROR_FLAG`;
+export const SHOW_LOADER = `${ns}.SHOW_LOADER`;

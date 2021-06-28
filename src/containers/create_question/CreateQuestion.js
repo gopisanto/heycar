@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { isEmpty, omit, some } from 'lodash';
+import { isEmpty, omit } from 'lodash';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
@@ -50,7 +50,8 @@ const CreateQuestion = ({ createQuestion, createQuestionFail }) => {
 
   const isCreateEnabled =
     !isEmpty(question) &&
-    some(Object.values(choices), choice => !isEmpty(choice.choice));
+    Object.values(choices).filter(choice => !isEmpty(choice.choice)).length >=
+      2;
 
   return (
     <CreateQuestionContainer>
@@ -58,18 +59,18 @@ const CreateQuestion = ({ createQuestion, createQuestionFail }) => {
         <CloseIcon />
       </Close>
       <h2>Create your Question</h2>
-      {createQuestionFail ||
-        (true && (
-          <ErrorMessage>Create Question Failed, please try again!</ErrorMessage>
-        ))}
+      {createQuestionFail && (
+        <ErrorMessage>Create Question Failed, please try again!</ErrorMessage>
+      )}
       <LabelInput
         label="Your Question"
         value={question}
         onChange={({ target: { value } }) => setQuestion(value)}
+        dataCy="question"
       />
       <label>Choices</label>
       {Object.keys(choices).map((id, i) => (
-        <Box key={id}>
+        <Box key={id} data-cy="choices">
           <input
             value={choices[id].choice}
             onChange={({ target: { value } }) => handleChoiceChange(value, id)}
@@ -79,11 +80,15 @@ const CreateQuestion = ({ createQuestion, createQuestionFail }) => {
             <ClearIcon onClick={() => handleRemoveChoice(id)} />
           )}
           {Object.keys(choices).length - 1 === i && (
-            <AddIcon onClick={handleAddChoice} />
+            <AddIcon onClick={handleAddChoice} data-cy="add_new_choice" />
           )}
         </Box>
       ))}
-      <Button disabled={!isCreateEnabled} onClick={handleCreateQuestion}>
+      <Button
+        disabled={!isCreateEnabled}
+        onClick={handleCreateQuestion}
+        data-cy="create_question"
+      >
         Create Question
       </Button>
     </CreateQuestionContainer>

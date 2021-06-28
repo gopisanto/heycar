@@ -29,9 +29,7 @@ export const Container = styled.main`
 
 export const QuestionsContainer = styled.section`
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
+  flex-flow: row wrap;
   max-width: 100vw;
 
   @media (min-width: 420px) {
@@ -44,6 +42,7 @@ export const CreateContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-right: 2em;
 
   @media (min-width: 420px) {
     & > label {

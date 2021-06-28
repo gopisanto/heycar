@@ -48,7 +48,7 @@ const QuestionDetail = ({
   };
 
   const saveChanges = () => {
-    saveVoting(id, voteIds);
+    saveVoting(id, extractIdsFromSlug(voteIds));
   };
 
   const handleClose = () => {
@@ -70,10 +70,10 @@ const QuestionDetail = ({
           <GoBack onClick={handleClose} />
           <h2>{question}</h2>
         </Header>
-        <Table>
+        <Table data-cy="choices_table">
           {choices &&
             choices.map(choice => {
-              const choiceId = extractIdsFromSlug(choice.url);
+              const choiceId = choice.url;
               const isVoted = voteIds.includes(choiceId);
 
               return (
@@ -89,7 +89,11 @@ const QuestionDetail = ({
               );
             })}
         </Table>
-        <Button disabled={voteIds.length === 0} onClick={saveChanges}>
+        <Button
+          data-cy="save_voting"
+          disabled={voteIds.length === 0}
+          onClick={saveChanges}
+        >
           Save Changes
         </Button>
       </QuestionDetailContainer>

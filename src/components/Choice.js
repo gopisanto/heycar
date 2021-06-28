@@ -19,7 +19,7 @@ const Choice = ({ choice: choiceObj = {}, onVote, id, isVoted, votePerc }) => {
       </Col>
       <Col flex={1}>{noOfVotes}</Col>
       <Col flex={1}>{votePerc}%</Col>
-      <Col flex={1}>
+      <Col flex={1} data-cy="vote_icon">
         <ThumbUpIcon
           fontSize="small"
           style={{ color: isVoted && 'blue' }}

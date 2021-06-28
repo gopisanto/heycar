@@ -21,11 +21,11 @@ const StyledLabelInput = styled.div`
   }
 `;
 
-const LabelInput = ({ onChange, label, value }) => {
+const LabelInput = ({ label, dataCy, value, onChange, someP }) => {
   return (
     <StyledLabelInput>
       <label>{label}</label>
-      <input type="text" onChange={onChange} value={value} />
+      <input type="text" data-cy={dataCy} value={value} onChange={onChange} />
     </StyledLabelInput>
   );
 };
@@ -34,6 +34,11 @@ LabelInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  dataCy: PropTypes.string,
+};
+
+LabelInput.defaultProps = {
+  dataCy: undefined,
 };
 
 export default LabelInput;
