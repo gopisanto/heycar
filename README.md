@@ -34,6 +34,11 @@
 - I have used _styled-component (css in js)_ to style the components.
 - For icons i have used react-loader-spinner for Loader image, and used material-ui for few icons.
 
+## Testing
+
+- I have written good amount of unit test cases using _Jest_
+- I have written end to end test cases using _Cypress_. Since i have deployed on free Heroku account i cannot implement pipelines or pre build policies to run test cases.
+
 ## Deployment
 
 - Finally it is deployed at https://questions-voting.herokuapp.com/questions
