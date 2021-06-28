@@ -1,20 +1,10 @@
 const CACHE_NAME = 'sw_cache_v2';
 
-// const urlsToCache = ['/', 'index.html', '/questions', 'favicon.ico', '/static/js/*.*', '/static/css/*.*', 'offline.html'];
-
 const self = this;
 
 //install SW
 self.addEventListener('install', (event) => {
-/*event.waitUntil(
-    caches.open(CACHE_NAME)
-    .then(cache => {
-        console.log('Opened cache');
-
-        return cache.addAll(urlsToCache);
-    })
-);*/
-//self.skipWaiting();
+    console.log('SW installed');
 })
 
 //Listen for requests
