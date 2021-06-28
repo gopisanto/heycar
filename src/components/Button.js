@@ -6,4 +6,5 @@ export default styled.button`
   border: 1px solid cadetblue;
   padding: 5px 10px;
   cursor: pointer;
+  margin-top: ${props => (props.marginTop ? '15px' : 'initial')};
 `;

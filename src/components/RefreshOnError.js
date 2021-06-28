@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from './Button';
@@ -29,16 +30,25 @@ const Container = styled.main`
 `;
 
 const RefreshOnError = ({ title, message, callback }) => {
+  const history = useHistory();
+
   const onClickHandler = () => {
     refreshPage();
     callback();
+  };
+
+  const onBack = () => {
+    history.push('/questions');
   };
 
   return (
     <Container>
       <h2>{title}</h2>
       <label>{message}</label>
-      <Button onClick={onClickHandler}>Refresh</Button>
+      <Button onClick={onClickHandler}>Click here to Refresh</Button>
+      <Button marginTop onClick={onBack}>
+        Click here to go back to questions
+      </Button>
     </Container>
   );
 };
